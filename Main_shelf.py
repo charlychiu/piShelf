@@ -46,26 +46,46 @@ def network_handle():
     j = json.loads(res)
     #print(res)
     result = j['result']
+    layer = j['layer']
     print result
+    print layer
     if result:
-        layer = j['layer']
         print "openShelf layer :"
         print layer
-        control_io(7)
+        if layer == 1:
+            control_io(22)
+        if layer == 2:
+            control_io(18)
+        if layer == 3:
+            control_io(16)
+def gpio_global():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(16, GPIO.OUT)
+    GPIO.setup(18, GPIO.OUT)
+    GPIO.setup(22, GPIO.OUT)
+    GPIO.output(16, GPIO.LOW)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.output(22, GPIO.LOW)
+    GPIO.setup(19, GPIO.IN)
+    GPIO.setup(21, GPIO.IN)
+    GPIO.setup(23, GPIO.IN)
 
 def control_io(pin):
-    GPIO.setmode(GPIO.BOARD)
-    #GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)     ## Turn on GPIO pin (HIGH)
-    time.sleep(1)                   ## Wait 1 second
+    time.sleep(10)                   ## Wait 1 second
     GPIO.output(pin, GPIO.LOW)      ## Turn off GPIO pin (LOW)
-    time.sleep(1)                   ## Wait 1 second
-    GPIO.cleanup()                  ## Cleanup
-    
+    #GPIO.cleanup()                  ## Cleanup
+
+def doorState():
+    print GPIO.input(19)
+    print GPIO.input(21)
+    print GPIO.input(23)
+    print "---------"
 
 init()
+gpio_global()
 while True:
-    #control_io(7)
+    #control_io(16)
+    #doorState()
     check_QRcatch()
-    time.sleep(5)
+    time.sleep(3)
