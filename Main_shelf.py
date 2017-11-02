@@ -53,11 +53,17 @@ def network_handle():
         print "openShelf layer :"
         print layer
         if layer == 1:
+            control_light(37)
             control_io(22)
+            #control_light(37)
         if layer == 2:
+            control_light(35)
             control_io(18)
+            #control_light(35)
         if layer == 3:
+            control_light(33)
             control_io(16)
+            #control_light(33)
 def gpio_global():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(16, GPIO.OUT)
@@ -69,12 +75,24 @@ def gpio_global():
     GPIO.setup(19, GPIO.IN)
     GPIO.setup(21, GPIO.IN)
     GPIO.setup(23, GPIO.IN)
+    GPIO.setup(33, GPIO.OUT)
+    GPIO.setup(35, GPIO.OUT)
+    GPIO.setup(37, GPIO.OUT)
+    GPIO.output(33, GPIO.LOW)
+    GPIO.output(35, GPIO.LOW)
+    GPIO.output(37, GPIO.LOW)
 
 def control_io(pin):
     GPIO.output(pin, GPIO.HIGH)     ## Turn on GPIO pin (HIGH)
     time.sleep(10)                   ## Wait 1 second
     GPIO.output(pin, GPIO.LOW)      ## Turn off GPIO pin (LOW)
     #GPIO.cleanup()                  ## Cleanup
+
+def control_light(pin):
+    GPIO.output(pin, GPIO.HIGH)     ## Turn on GPIO pin (HIGH)
+    time.sleep(2)                   ## Wait 1 second
+    GPIO.output(pin, GPIO.LOW)      ## Turn off GPIO pin (LOW)
+    #GPIO.cleanup() 
 
 def doorState():
     print GPIO.input(19)
@@ -85,6 +103,9 @@ def doorState():
 init()
 gpio_global()
 while True:
+    #control_light(33)
+    #control_light(35)
+    #control_light(37)
     #control_io(16)
     #doorState()
     check_QRcatch()
